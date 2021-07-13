@@ -6,8 +6,8 @@ const getStyleObj = (theme) => {
     return StyleSheet.create({
         container: {
             borderRadius: 35,
-            backgroundColor: colors.gray,
-            width: 300,
+            backgroundColor: colors.blue_secondary,
+            width: "80%",
             alignItems: 'center',
             justifyContent: 'center',
         },

@@ -10,7 +10,22 @@ import colors from "../../constants/colors";
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
-    <Tab.Navigator initialRouteName="TimerScreen">
+    <Tab.Navigator
+      initialRouteName="TimerScreen"
+      tabBarOptions={{
+        showLabel: false,
+        style: {
+          backgroundColor: "transparent",
+          borderTopWidth: 0,
+          position: "absolute",
+          left: 50,
+          right: 50,
+          bottom: 20,
+          height: 100,
+          padding: 50,
+        },
+      }}
+    >
       <Tab.Screen
         name="TimerScreen"
         component={TimerScreen}
@@ -19,7 +34,7 @@ const TabNavigator = () => {
             return (
               <MaterialIcons
                 name="timer"
-                size={size}
+                size={40}
                 color={focused ? color : colors.gray}
               />
             );
@@ -35,7 +50,7 @@ const TabNavigator = () => {
             return (
               <Ionicons
                 name="options-sharp"
-                size={size}
+                size={40}
                 color={focused ? color : colors.gray}
               />
             );

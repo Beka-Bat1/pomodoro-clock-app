@@ -29,7 +29,7 @@ const getStyleObj = (theme) => {
             alignItems: 'center',
             justifyContent: 'space-around',
             flexDirection: 'row',
-
+            color: colors.white
         },
         icon: {
             margin: 5,

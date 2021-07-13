@@ -16,6 +16,7 @@ import getStyleObj from "./styles";
 interface Props {
   dropDownValues: number[];
   identifier: string;
+  onOptionChange: Function;
 }
 
 interface ItemToRender {
@@ -36,20 +37,16 @@ const ExtendedCard = (props: Props) => {
 
     switch (props.identifier) {
       case "Focus Time":
-        globalOptions.updateFocusTime(item);
+        props.onOptionChange("Focus Time", item);
         break;
       case "Short Break":
-        globalOptions.updateShortBreak(item);
+        props.onOptionChange("Short Break", item);
         break;
       case "Long Break":
-        globalOptions.updateLongBreak(item);
+        props.onOptionChange("Long Break", item);
         break;
       case "Sessions":
-        console.log('updating session');
-        console.log(item);
-        
-
-        globalOptions.updateSessions(item);
+        props.onOptionChange("Sessions", item);
         break;
       default:
         throw new Error("something is wrong during setting option ...");
@@ -79,6 +76,9 @@ const ExtendedCard = (props: Props) => {
       extraData={selectedItem}
       renderItem={itemToRender}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
+      style={{
+        marginLeft: 100,
+      }}
     />
   );
 };

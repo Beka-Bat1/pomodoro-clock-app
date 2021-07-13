@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native"
-import colors from "../../../constants/colors"
+import colors from "../../constants/colors"
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+
     },
 
     button: {
@@ -17,6 +18,13 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     text: {
         color: colors.white,

@@ -11,10 +11,10 @@ import {
 import RootNavigator from "./navigation/RootNavigator";
 
 const initialState = {
-  focusTime: 25,
-  shortBreak: 5,
-  longBreak: 15,
-  sessions: 4,
+  focusTime: 0.5,
+  shortBreak: 0.1,
+  longBreak: 0.3,
+  sessions: 3,
 };
 
 export default function App() {

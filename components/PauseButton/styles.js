@@ -5,14 +5,14 @@ export const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        margin: 5,
+        height: '20%',
+        width: '100%',
     },
-    IconButton: {
+    iconButton: {
         // backgroundColor: colors.blue_secondary,
         textShadowColor: 'transparent',
-        textShadowOffset: {width: -2, height: 2},
+        textShadowOffset: { width: -2, height: 2 },
         textShadowRadius: 4,
         elevation: 5,
-        height: 70,
     }
 })

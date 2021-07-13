@@ -4,31 +4,31 @@ import {
   TouchableWithoutFeedback,
   Platform,
   TouchableNativeFeedback,
-  Dimensions,
 } from "react-native";
 import { IconButton, TouchableRipple } from "react-native-paper";
 
 import colors from "../../constants/colors";
-import { styles } from "./styles";
+import getStyleObj from "./styles";
 
 interface Props {
   onPress: Function;
-  play: boolean;
 }
 
-const PauseButton = (props: any) => {
+const ClearButton = (props: Props) => {
+  const styles = getStyleObj();
+
   return (
     <TouchableWithoutFeedback style={styles.container}>
       <IconButton
-        onPress={props.onPress}
+        onPress={() => props.onPress()}
         animated={true}
         color={colors.blue_secondary}
         size={100}
-        icon={props.play ? "pause-circle" : "play-circle"}
+        icon={"stop-circle-outline"}
         style={styles.iconButton}
       />
     </TouchableWithoutFeedback>
   );
 };
 
-export default PauseButton;
+export default ClearButton;

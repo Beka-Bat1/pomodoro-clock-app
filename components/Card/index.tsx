@@ -1,18 +1,13 @@
 import React, { useContext, useState } from "react";
 import {
-  StyleSheet,
-  TouchableWithoutFeedback,
   View,
-  Alert,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   Platform,
   TouchableNativeFeedback,
 } from "react-native";
 
 import { IconButton } from "react-native-paper";
-import colors from "../../constants/colors";
 import getStyleObj from "./styles";
 import ExtendedCard from "./ExtendedCard";
 import GlobalOptionsContext from "../../context";
@@ -22,6 +17,7 @@ interface Props {
   textRight: string;
   isOpened: boolean;
   dropDownValues: number[];
+  onOptionChange: Function;
 }
 
 const Card = (props: Props) => {
@@ -54,14 +50,14 @@ const Card = (props: Props) => {
             />
           </View>
         </Touchable>
-
+      </View>
         {pressed && (
           <ExtendedCard
             dropDownValues={props.dropDownValues}
             identifier={props.textLeft}
+            onOptionChange={props.onOptionChange}
           />
         )}
-      </View>
     </>
   );
 };
