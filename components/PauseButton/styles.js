@@ -10,9 +10,22 @@ export const styles = StyleSheet.create({
     },
     iconButton: {
         // backgroundColor: colors.blue_secondary,
-        textShadowColor: 'transparent',
-        textShadowOffset: { width: -2, height: 2 },
-        textShadowRadius: 4,
-        elevation: 5,
+        // textShadowColor: 'red',
+        // textShadowOffset: { width: -4, height: 2 },
+        // textShadowRadius: 20,
+        // elevation: 8,
+        // lineHeight: 15
+    },
+
+    buttonContainer: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+
+        elevation: 2,
     }
 })

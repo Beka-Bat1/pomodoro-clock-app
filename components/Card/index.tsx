@@ -36,7 +36,7 @@ const Card = (props: Props) => {
 
   return (
     <>
-      <View style={{ ...styles.container, ...styles.button }}>
+      <View style={[styles.container, styles.button]}>
         <Touchable onPress={pressHandler}>
           <View style={styles.textContainer}>
             <Text style={styles.text}> {props.textLeft} </Text>
@@ -51,13 +51,13 @@ const Card = (props: Props) => {
           </View>
         </Touchable>
       </View>
-        {pressed && (
-          <ExtendedCard
-            dropDownValues={props.dropDownValues}
-            identifier={props.textLeft}
-            onOptionChange={props.onOptionChange}
-          />
-        )}
+      {pressed && (
+        <ExtendedCard
+          dropDownValues={props.dropDownValues}
+          identifier={props.textLeft}
+          onOptionChange={props.onOptionChange}
+        />
+      )}
     </>
   );
 };

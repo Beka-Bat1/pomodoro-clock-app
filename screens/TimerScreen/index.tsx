@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-import CircularAnimated from "../../components/CircularAnimated";
+import CircularAnimated from "../../components/CircularAnimated/CircularAnimated";
 import PauseButton from "../../components/PauseButton";
 import LinearBackground from "../../components/LinearBackground";
 import GlobalOptionsContext from "../../context";

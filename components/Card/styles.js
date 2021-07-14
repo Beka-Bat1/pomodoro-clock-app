@@ -5,20 +5,15 @@ import colors from "../../constants/colors"
 const getStyleObj = (theme) => {
     return StyleSheet.create({
         container: {
-            flex: 1,
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            marginVertical: 10
         },
 
         button: {
             backgroundColor: colors.gray,
             color: colors.white,
-            height: 70,
-            marginHorizontal: 20,
             borderRadius: 35,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: 20,
         },
         text: {
             color: colors.white,
