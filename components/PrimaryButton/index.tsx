@@ -9,7 +9,7 @@ import {
 import { styles } from "./styles";
 
 interface Props {
-  onPress: Function;
+  onPress: any;
   title: string;
   style?: Object;
 }
@@ -20,12 +20,11 @@ const PrimaryButton = (props: Props) => {
       ? TouchableNativeFeedback
       : TouchableOpacity;
   return (
-    <View style={styles.container}>
-      {/* TOFINDOUT    {{ ...styles.button, props.style }}  VS   [styles.button, props.style]   */}
-      <Touchable style={[styles.button, props.style]} onPress={props.onPress}>
+    <Touchable style={styles.container} onPress={props.onPress}>
+      <View style={{ ...styles.button, ...props.style }}>
         <Text style={styles.text}> {props.title} </Text>
-      </Touchable>
-    </View>
+      </View>
+    </Touchable>
   );
 };
 

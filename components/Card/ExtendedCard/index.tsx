@@ -1,15 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  FlatList,
-  Platform,
-  TouchableHighlight,
-  Alert,
-  Pressable,
-} from "react-native";
+import { Text, View, FlatList, Pressable } from "react-native";
 import GlobalOptionsContext from "../../../context";
 import getStyleObj from "./styles";
 
@@ -55,13 +45,19 @@ const ExtendedCard = (props: Props) => {
 
   const itemToRender = (itemRenderProps: ItemToRender) => {
     return (
-      <View style={styles.container}>
+      <View style={styles.buttonContainer}>
         <Pressable
           key={itemRenderProps.index}
           onPress={() =>
             optionUpdateHandler(itemRenderProps.item, itemRenderProps.index)
           }
-          style={itemRenderProps.index == selectedItem && styles.innerContainer}
+          style={[
+            styles.button,
+
+            itemRenderProps.index == selectedItem
+              ? styles.selectedButton
+              : styles.unselectedButton,
+          ]}
         >
           <Text style={styles.text}>{itemRenderProps.item}</Text>
         </Pressable>
@@ -72,13 +68,10 @@ const ExtendedCard = (props: Props) => {
   return (
     <FlatList
       data={props.dropDownValues}
-      keyExtractor={(item: any, index: any) => index}
+      keyExtractor={(item: any, index: any) => index + item}
       extraData={selectedItem}
       renderItem={itemToRender}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
-      style={{
-        marginLeft: 100,
-      }}
     />
   );
 };

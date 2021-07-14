@@ -4,30 +4,32 @@ import colors from "../../../constants/colors"
 
 const getStyleObj = (theme) => {
     return StyleSheet.create({
-        container: {
-            borderRadius: 35,
-            backgroundColor: colors.blue_secondary,
-            width: "80%",
+        buttonContainer: {
+            flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
         },
-        innerContainer: {
-            backgroundColor: colors.pink,
-            height: 50,
-            width: 300,
-            justifyContent: 'center',
+        button: {
+            borderRadius: 35,
             alignItems: 'center',
-            transform: [{ scaleX: 2 }]
+            justifyContent: 'center',
+            width: '80%',
+            paddingVertical: 10,
+        },
+        unselectedButton: {
+            backgroundColor: colors.blue_secondary,
+        },
+        selectedButton: {
+            backgroundColor: colors.pink,
+            transform: [{ scaleX: 1.15 }],
         },
         text: {
             color: colors.white,
-            fontSize: 16,
+            fontSize: 24,
         },
         separator: {
-            paddingVertical: 10,
+            paddingVertical: 5,
             fontSize: 18,
-
-
         }
 
 

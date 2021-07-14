@@ -1,5 +1,5 @@
 import React, { useContext, useLayoutEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import Card from "../../components/Card";
 import LinearBackground from "../../components/LinearBackground";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -67,23 +67,30 @@ const OptionsScreen = () => {
   return (
     <>
       <LinearBackground />
+
       <View style={styles.container}>
-        {timerCards.map((timeCard, index) => {
-          return (
-            <Card
-              textLeft={timeCard.textLeft}
-              textRight={timeCard.textRight}
-              isOpened={timeCard.isOpened}
-              dropDownValues={timeCard.dropDownValues}
-              onOptionChange={onOptionChange}
-            />
-          );
-        })}
+        <ScrollView>
+          {timerCards.map((timeCard, index) => {
+            return (
+              <Card
+                textLeft={timeCard.textLeft}
+                textRight={timeCard.textRight}
+                isOpened={timeCard.isOpened}
+                dropDownValues={timeCard.dropDownValues}
+                onOptionChange={onOptionChange}
+              />
+            );
+          })}
+        </ScrollView>
 
         <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={() => console.log("Cancel")} style={{backgroundColor: colors.gray}} title="Cancel" />
+          <PrimaryButton
+            onPress={() => console.log("Cancel")}
+            style={{ backgroundColor: colors.gray }}
+            title="Cancel"
+          />
 
-          <PrimaryButton onPress={saveChangesHandler} title="Save" />
+          <PrimaryButton title="Save" onPress={saveChangesHandler} />
         </View>
       </View>
     </>
@@ -97,12 +104,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 100,
     overflow: "hidden",
+    marginTop: 80,
   },
   buttonContainer: {
+    /// TOFINDOUT wdith 100 vs flex 1
+    width: '100%',
     flexDirection: "row",
-    width: "100%",
-    alignItems: "stretch",
-    justifyContent: "space-between",
+    alignItems: "center",
+    justifyContent: "space-around",
     padding: 10,
     position: "absolute",
     bottom: 50,

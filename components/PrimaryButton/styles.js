@@ -6,18 +6,17 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-
+        marginVertical: 10,
     },
 
     button: {
         backgroundColor: colors.blue_secondary,
         color: colors.white,
-        height: 70,
-        marginHorizontal: 20,
         borderRadius: 35,
-        alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        alignItems: "center",
+        paddingHorizontal: 40,
+        paddingVertical: 20,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -29,6 +28,6 @@ export const styles = StyleSheet.create({
     text: {
         color: colors.white,
         fontWeight: '500',
-        fontSize: 20,
+        fontSize: 24,
     }
 })
