@@ -12,7 +12,7 @@ interface Props {
 
 const PauseButton = (props: any) => {
   return (
-    <View style={styles.buttonContainer}>
+    <View style={{}}>
       <TouchableWithoutFeedback style={styles.container}>
         <IconButton
           onPress={props.onPress}

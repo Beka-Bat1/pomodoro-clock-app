@@ -15,14 +15,14 @@ const TabNavigator = () => {
       tabBarOptions={{
         showLabel: false,
         style: {
-          backgroundColor: "transparent",
-          borderTopWidth: 0,
           position: "absolute",
+          backgroundColor: "transparent",
           left: 50,
           right: 50,
-          bottom: 20,
+          bottom: 25,
           height: 100,
-          padding: 50,
+          elevation: 0,
+          shadowColor: "#fff",
         },
       }}
     >

@@ -1,6 +1,12 @@
 import "react-native-gesture-handler";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
+import { StyleSheet, View, Animated, Text } from "react-native";
 
 import CircularAnimated from "../../components/CircularAnimated/CircularAnimated";
 import PauseButton from "../../components/PauseButton";
@@ -153,11 +159,52 @@ const TimerScreen = () => {
     setTimeString("00 : 00");
   };
 
+  const spinValue = useRef(new Animated.Value(0)).current;
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 100],
+    outputRange: ["0deg", "360deg"],
+  });
+
+  useEffect(() => {
+    if (!isPlayMode) {
+      return;
+    }
+    Animated.timing(spinValue, {
+      toValue: 100,
+      duration: 60000,
+      useNativeDriver: true,
+    }).start();
+  }, [isPlayMode]);
+
   return (
     <>
       <LinearBackground />
       <View style={styles.container}>
-        <CircularAnimated progress={progress} text={timeString} />
+        <View
+          style={{
+            flex: 3 / 4,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View style={{ zIndex: 1 }}>
+            <CircularAnimated progress={progress} text={timeString} />
+          </View>
+
+          <Animated.View
+            style={{
+              position: "absolute",
+              zIndex: -1,
+              transform: [{ rotate: spin }],
+            }}
+          >
+            <View style={styles.circleShadow} />
+          </Animated.View>
+
+          <Text></Text>
+        </View>
+
         <View style={styles.buttonContainer}>
           {progress > 0 && progress < 100 && (
             <ClearButton onPress={stopTimer} />
@@ -183,5 +230,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
+  },
+
+  circleShadow: {
+    borderWidth: 40,
+    borderColor: "hsla(244, 41%, 38%, 0.5)",
+    // borderTopColor: "#332D64",
+    // borderEndColor: "#332D64",
+    // borderLeftColor: "#332D64",
+    // borderRightColor: "#332D64",
+    // borderStartColor: "#332D64",
+    // borderBottomColor: "#332D64",
+    height: 260,
+    width: 260,
+    borderRadius: 260,
+    //   shadowColor: "#4749EF",
+    //   shadowOffset: {
+    //     width: 0,
+    //     height: 0,
+    //   },
+    //   shadowOpacity: 0.7,
+    //   shadowRadius: 30,
+
+    //   elevation: 32,
+    //
   },
 });

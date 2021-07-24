@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { Text, View } from "react-native";
 import colors from "../../constants/colors";
 
 interface Props {
@@ -10,27 +10,22 @@ interface Props {
 
 const CircularAnimated = (props: Props) => {
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <AnimatedCircularProgress
-        size={120}
+        size={200}
         width={15}
         fill={props.progress}
         tintColor={colors.blue}
         onAnimationComplete={() => console.log("onAnimationComplete")}
-        backgroundColor="#3d5875"
+        backgroundColor="#4F52FF"
+        style={{ transform: [{ rotate: "-90deg" }] }}
       ></AnimatedCircularProgress>
+
+      <View style={{ position: "absolute" }}>
+        <Text style={{ color: "white", fontSize: 30 }}>{props.text}</Text>
+      </View>
     </View>
   );
 };
 
 export default CircularAnimated;
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: "50%",
-    width: "50%",
-    marginTop: 50,
-  },
-});

@@ -11,10 +11,10 @@ const getStyleObj = () => {
     },
     iconButton: {
       // backgroundColor: colors.blue_secondary,
-      textShadowColor: "transparent",
-      textShadowOffset: { width: -2, height: 2 },
-      textShadowRadius: 4,
-      elevation: 5,
+      // textShadowColor: "transparent",
+      // textShadowOffset: { width: -2, height: 2 },
+      // textShadowRadius: 4,
+      // elevation: 5,
     },
   });
 };
