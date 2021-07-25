@@ -6,7 +6,14 @@ import React, {
   useState,
   useRef,
 } from "react";
-import { StyleSheet, View, Animated, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Animated,
+  Text,
+  Alert,
+  SafeAreaView,
+} from "react-native";
 
 import CircularAnimated from "../../components/CircularAnimated/CircularAnimated";
 import PauseButton from "../../components/PauseButton";
@@ -36,53 +43,6 @@ const TimerScreen = () => {
     setTotalTime(focusTime);
   }, [globalOptions]);
 
-  useEffect(() => {
-    if (isPlayMode && totalTime > 0) {
-      let myInterval = setInterval(() => {
-        console.log(second, "inside set interval");
-        if (second > 0) {
-          console.log("sec");
-          setSec(second - 1);
-        }
-        if (second === 0) {
-          console.log("second is 0");
-
-          if (minute === 0) {
-            console.log(minute, second, "00: 00 ... clearing interval");
-            clearTimer();
-            clearInterval(myInterval);
-          } else {
-            setMin(minute - 1);
-            setSec(59);
-          }
-        }
-      }, 1000);
-      return () => {
-        console.log("clearing interval");
-        clearInterval(myInterval);
-      };
-    }
-  }, [second, isPlayMode]);
-
-  useEffect(() => {
-    setTimeString(
-      `${minute < 10 ? "0" + minute : minute} : ${
-        second < 10 ? "0" + second : second
-      }`
-    );
-
-    if (!isPlayMode) return;
-    console.log("setting progress");
-
-    setProgress((prevProgress) => {
-      if (prevProgress == 0) {
-        return 100;
-      }
-
-      return ((second * 1000 + minute * 60 * 1000) / totalTime) * 100;
-    });
-  }, [second, minute]);
-
   const convertTotalTime = useCallback(() => {
     console.log(totalTime, "minutes and seconds are set ...");
     let milliseconds = Math.floor((totalTime % 1000) / 100);
@@ -94,57 +54,10 @@ const TimerScreen = () => {
   }, [totalTime]);
 
   const toggleTimerHandler = () => {
-    console.log(isPlayMode, "playMode");
-
-    if (!isPlayMode && totalTime > 0 && progress == 100) {
-      console.log("converting totaltime");
-      setIsPlayMode(true);
-      convertTotalTime();
-      return;
-    }
-
     setIsPlayMode((prevState) => !prevState);
   };
 
-  const clearTimer = () => {
-    setProgress(100);
-    setTotalTime(0);
-
-    if (currentSession == globalOptions.sessions) {
-      console.log("it's last session ");
-      setCurrentSession(0);
-      setIsBreak(false);
-      setIsPlayMode(false);
-      return;
-    }
-
-    if (isBreak) {
-      setIsBreak((prevState) => !prevState);
-
-      if (currentSession % 3 > 1) {
-        console.log("it's third session take a long break");
-        setTotalTime(globalOptions.longBreak * 60 * 1000);
-      } else if (currentSession >= 1 && isPlayMode) {
-        console.log(
-          `it is short break take a break now for ${
-            globalOptions.shortBreak * 60 * 1000
-          }`
-        );
-        setTotalTime(globalOptions.shortBreak * 60 * 1000);
-      } else {
-        console.warn(" somethign is  in clearTimer => isBreak");
-      }
-    } else {
-      setTotalTime(globalOptions.focusTime * 60 * 1000);
-    }
-
-    setCurrentSession((prevSession) => prevSession + 1);
-    // let
-    setIsPlayMode(true);
-    toggleTimerHandler();
-  };
-
-  const stopTimer = () => {
+  const stopTimer = useCallback(() => {
     setSec(0);
     setIsPlayMode(false);
     setMin(0);
@@ -153,7 +66,89 @@ const TimerScreen = () => {
     setIsBreak(false);
     setCurrentSession(1);
     setTimeString("00 : 00");
-  };
+  }, [globalOptions]);
+
+  const onSessionFinish = useCallback(() => {
+    setSec(0);
+    setIsPlayMode(false);
+    setMin(0);
+    setProgress(100);
+    setTimeString("00 : 00");
+    setCurrentSession((prevSession) => prevSession + 0.5);
+
+    // setting new total time depending on session or break Time
+    if (currentSession == globalOptions.sessions) {
+      Alert.alert(`Well done! it was ${currentSession} in a row `, "Great!");
+      stopTimer();
+      return;
+    }
+    console.log(isBreak, "BREAK? ");
+
+    if (isBreak) {
+      if (currentSession % 3 > 1) {
+        Alert.alert(
+          "it's Long break time, do some pushups or dance or eat chocolate ... "
+        );
+        setTotalTime(globalOptions.longBreak * 60 * 1000);
+        // setIsBreak(false);
+      } else if (currentSession >= 1) {
+        Alert.alert(
+          "it's short break time, take a deep breath or fresh air for a bit ... "
+        );
+        setTotalTime(globalOptions.shortBreak * 60 * 1000);
+        // setIsBreak(false);
+      } else {
+        console.warn(" something is wrong");
+      }
+    } else {
+      Alert.alert("it's Focus time go go go ");
+      setTotalTime(globalOptions.focusTime * 60 * 1000);
+    }
+
+    convertTotalTime();
+    setIsPlayMode(true);
+  }, [stopTimer, convertTotalTime, currentSession, isBreak]);
+
+  useEffect(() => {
+    if (isPlayMode) {
+      let myInterval = setInterval(() => {
+        if (second > 0) {
+          setSec(second - 1);
+        } else if (second === 0) {
+          if (minute === 0) {
+            setIsBreak((prevState) => !prevState);
+            onSessionFinish();
+          } else {
+            setMin(minute - 1);
+            setSec(59);
+          }
+        } else {
+          console.warn("გასხმა");
+        }
+      }, 1000);
+      return () => {
+        clearInterval(myInterval);
+      };
+    }
+  }, [second, minute, isPlayMode, onSessionFinish]);
+
+  useEffect(() => {
+    setTimeString(
+      `${minute < 10 ? "0" + minute : minute} : ${
+        second < 10 ? "0" + second : second
+      }`
+    );
+
+    if (!isPlayMode) return;
+
+    setProgress((prevProgress) => {
+      if (prevProgress == 0) {
+        return 100;
+      }
+
+      return ((second * 1000 + minute * 60 * 1000) / totalTime) * 100;
+    });
+  }, [second, minute]);
 
   const spinValue = useRef(new Animated.Value(0)).current;
 

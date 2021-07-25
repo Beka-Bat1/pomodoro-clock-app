@@ -16,7 +16,7 @@ const CircularAnimated = (props: Props) => {
         width={15}
         fill={props.progress}
         tintColor={colors.blue}
-        onAnimationComplete={() => console.log("onAnimationComplete")}
+        // onAnimationComplete={() => console.log("onAnimationComplete")}
         backgroundColor="#4F52FF"
         style={{ transform: [{ rotate: "-90deg" }] }}
       ></AnimatedCircularProgress>

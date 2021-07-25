@@ -1,10 +1,14 @@
-import React, { useContext, useLayoutEffect } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, View, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import Card from "../../components/Card";
+import ExtendedCard from "../../components/Card/ExtendedCard";
 import LinearBackground from "../../components/LinearBackground";
 import PrimaryButton from "../../components/PrimaryButton";
-import colors from "../../constants/colors";
 import GlobalOptionsContext from "../../context";
+
+import colors from "../../constants/colors";
 
 interface TimeCard {
   textLeft: string;
@@ -17,75 +21,122 @@ interface TimeCard {
 const OptionsScreen = () => {
   const globalOptions = useContext(GlobalOptionsContext);
 
-  useLayoutEffect(() => {
-    console.log(timerCards);
-  });
+  const { navigate } = useNavigation();
 
-  const timerCards: TimeCard[] = [
+  let timerCards: TimeCard[] = [
     {
       textLeft: "Focus Time",
       textRight: globalOptions.focusTime + " Min",
       isOpened: false,
       dropDownValues: [15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-      chosenValue: 1,
+      chosenValue: globalOptions.focusTime,
     },
     {
       textLeft: "Short Break",
       textRight: globalOptions.shortBreak + " Min",
       isOpened: false,
       dropDownValues: [5, 10, 15, 20],
-      chosenValue: 1,
+      chosenValue: globalOptions.shortBreak,
     },
     {
       textLeft: "Long Break",
       textRight: globalOptions.longBreak + " Min",
       isOpened: false,
       dropDownValues: [15, 20, 25, 30, 35, 40, 45, 50],
-      chosenValue: 1,
+      chosenValue: globalOptions.longBreak,
     },
     {
       textLeft: "Sessions",
       textRight: globalOptions.sessions + " Intervals",
       isOpened: false,
       dropDownValues: [1, 2, 3, 4, 5, 6, 7, 8],
-      chosenValue: 1,
+      chosenValue: globalOptions.sessions,
     },
   ];
 
   const saveChangesHandler = () => {
     console.log("saving changes ... ");
+
+    timerCards.map((timerCard) => {
+      globalOptions.updateFocusTime(timerCard.chosenValue);
+      globalOptions.updateShortBreak(timerCard.chosenValue);
+      globalOptions.updateLongBreak(timerCard.chosenValue);
+      globalOptions.updateSessions(timerCard.chosenValue);
+    });
   };
 
-  const onOptionChange = (identifier: any, value: any) => {
+  const cancelHandler = () => {
+    navigate("TimerScreen");
+  };
+
+  const onOptionChange = (identifier: string, value: number) => {
+    console.log(identifier, value);
+
     timerCards.find((timerCard) => {
-      timerCard.textLeft === identifier
-        ? (timerCard.chosenValue = value)
-        : null;
+      if (timerCard.textLeft === identifier) {
+        timerCard.chosenValue = value;
+
+        switch (identifier) {
+          case "Sessions":
+            timerCard.textRight = `${value} Intervals`;
+            break;
+          default:
+            timerCard.textRight = `${value} Min`;
+            break;
+        }
+      }
+    });
+  };
+
+  const onButtonPress = (identifier: string) => {
+    timerCards.find((timerCard) => {
+      if (timerCard.textLeft === identifier) {
+        console.log(timerCard.isOpened, "card open");
+        timerCard.isOpened = !timerCard.isOpened;
+      }
     });
   };
 
   return (
     <>
-      <LinearBackground />
-
       <View style={styles.container}>
-        <ScrollView>
-          {timerCards.map((timeCard, index) => {
-            return (
-              <Card
-                textLeft={timeCard.textLeft}
-                textRight={timeCard.textRight}
-                isOpened={timeCard.isOpened}
-                dropDownValues={timeCard.dropDownValues}
-                onOptionChange={onOptionChange}
-              />
-            );
-          })}
-        </ScrollView>
+        <LinearBackground />
+        <View style={styles.optionContainer}>
+          <FlatList
+            data={timerCards}
+            keyExtractor={(item, index) => item.textLeft}
+            extraData={timerCards}
+            renderItem={(itemData) => {
+              const { textLeft, textRight, isOpened, dropDownValues } =
+                itemData.item;
+
+              return (
+                <>
+                  <Card
+                    key={itemData.index}
+                    textLeft={textLeft}
+                    textRight={textRight}
+                    isOpened={isOpened}
+                    onButtonPress={() => onButtonPress(textLeft)}
+                  />
+
+                  {isOpened && (
+                    <ExtendedCard
+                      dropDownValues={dropDownValues}
+                      identifier={textLeft}
+                      onOptionChange={onOptionChange}
+                      isListOpen={isOpened}
+                    />
+                  )}
+                </>
+              );
+            }}
+          />
+        </View>
 
         <View style={styles.buttonContainer}>
           <PrimaryButton
-            onPress={() => console.log("Cancel")}
+            onPress={cancelHandler}
             style={{ backgroundColor: colors.gray }}
             title="Cancel"
           />
@@ -102,18 +153,17 @@ export default OptionsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 100,
-    overflow: "hidden",
-    marginTop: 80,
   },
   buttonContainer: {
-    /// TOFINDOUT wdith 100 vs flex 1
-    width: '100%',
+    flex: 0.2,
+    marginBottom: 50,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    padding: 10,
-    position: "absolute",
-    bottom: 50,
+  },
+  optionContainer: {
+    flex: 0.9,
+    marginTop: 50,
+    paddingBottom: 10,
   },
 });

@@ -1,5 +1,4 @@
 import React, { useReducer, useState } from "react";
-import CircularProgressBar from "./components/CircularProgressBar";
 import { GlobalOptionsProvider } from "./context";
 import {
   FOCUS_TIME,
@@ -12,9 +11,9 @@ import RootNavigator from "./navigation/RootNavigator";
 
 const initialState = {
   focusTime: 0.5,
-  shortBreak: 0.1,
-  longBreak: 0.3,
-  sessions: 3,
+  shortBreak: 1,
+  longBreak: 2,
+  sessions: 4,
 };
 
 export default function App() {

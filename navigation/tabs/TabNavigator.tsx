@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="TimerScreen"
+      initialRouteName="OptionsScreen"
       tabBarOptions={{
         showLabel: false,
         style: {
@@ -20,9 +20,7 @@ const TabNavigator = () => {
           left: 50,
           right: 50,
           bottom: 25,
-          height: 100,
           elevation: 0,
-          shadowColor: "#fff",
         },
       }}
     >

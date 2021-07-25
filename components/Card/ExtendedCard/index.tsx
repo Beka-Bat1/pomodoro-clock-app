@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Text, View, FlatList, Pressable } from "react-native";
+import React, { useContext, useRef, useState, useEffect } from "react";
+import { Text, View, Pressable, Animated } from "react-native";
 import GlobalOptionsContext from "../../../context";
 import getStyleObj from "./styles";
 
@@ -7,6 +7,7 @@ interface Props {
   dropDownValues: number[];
   identifier: string;
   onOptionChange: Function;
+  isListOpen: boolean;
 }
 
 interface ItemToRender {
@@ -21,27 +22,56 @@ const ExtendedCard = (props: Props) => {
   // selected item gets different style
   const [selectedItem, setSelectedItem] = useState(-1);
 
+  let { isListOpen, dropDownValues, identifier, onOptionChange } = props;
+
   const optionUpdateHandler = (item: any, index: any) => {
     setSelectedItem(index);
-    console.log(item, "an item in extended card select item handler ");
 
-    switch (props.identifier) {
+    switch (identifier) {
       case "Focus Time":
-        props.onOptionChange("Focus Time", item);
+        onOptionChange("Focus Time", item);
         break;
       case "Short Break":
-        props.onOptionChange("Short Break", item);
+        onOptionChange("Short Break", item);
         break;
       case "Long Break":
-        props.onOptionChange("Long Break", item);
+        onOptionChange("Long Break", item);
         break;
       case "Sessions":
-        props.onOptionChange("Sessions", item);
+        onOptionChange("Sessions", item);
         break;
       default:
         throw new Error("something is wrong during setting option ...");
     }
   };
+
+  const heightValue = useRef(new Animated.Value(0)).current;
+
+  const containerHeight = heightValue.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 300],
+  });
+
+  useEffect(() => {
+    switch (isListOpen) {
+      case false:
+        Animated.timing(heightValue, {
+          toValue: 100,
+          duration: 1000,
+          useNativeDriver: false,
+        }).start();
+        break;
+      case true:
+        Animated.timing(heightValue, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: false,
+        }).start();
+        break;
+      default:
+        console.warn("errr");
+    }
+  }, [isListOpen]);
 
   const itemToRender = (itemRenderProps: ItemToRender) => {
     return (
@@ -53,7 +83,6 @@ const ExtendedCard = (props: Props) => {
           }
           style={[
             styles.button,
-
             itemRenderProps.index == selectedItem
               ? styles.selectedButton
               : styles.unselectedButton,
@@ -66,12 +95,17 @@ const ExtendedCard = (props: Props) => {
   };
 
   return (
-    <FlatList
-      data={props.dropDownValues}
+    <Animated.FlatList
+      style={[styles.listContainer, { height: containerHeight }]}
+      data={dropDownValues}
       keyExtractor={(item: any, index: any) => index + item}
       extraData={selectedItem}
       renderItem={itemToRender}
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ItemSeparatorComponent={() => (
+        <React.Fragment>
+          <View style={styles.separator} />
+        </React.Fragment>
+      )}
     />
   );
 };
