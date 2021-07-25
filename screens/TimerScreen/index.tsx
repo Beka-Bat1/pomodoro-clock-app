@@ -70,10 +70,6 @@ const TimerScreen = () => {
         second < 10 ? "0" + second : second
       }`
     );
-  }, [second, minute, totalTime, isPlayMode]);
-
-  useEffect(() => {
-    console.log(isPlayMode);
 
     if (!isPlayMode) return;
     console.log("setting progress");
